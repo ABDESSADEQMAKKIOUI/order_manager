@@ -25,7 +25,9 @@ public class ClientService {
     public Optional<Client> getClientById(int id) {
         return clientRepository.findById(id);
     }
-
+    public Optional<Client> getClientByName(String name) {
+        return clientRepository.findByName(name);
+    }
     public void saveClient(Client client) {
          clientRepository.save(client);
     }

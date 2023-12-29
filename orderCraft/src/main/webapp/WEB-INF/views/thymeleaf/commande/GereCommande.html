@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Commandes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Add your custom styles here, if needed */
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Liste des Commandes</h2>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Code</th>
+            <th>Status</th>
+            <th>Prix Total</th>
+            <th>Articles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over the list of Commande objects provided by the controller -->
+        <tr th:each="commande : ${commandes}">
+            <td th:text="${commande.id}"></td>
+            <td th:text="${commande.client.name}"></td>
+            <td th:text="${#dates.format(commande.dateC, 'yyyy-MM-dd')}"></td>
+            <td th:text="${commande.stats}"></td>
+            <td th:text="${commande.prixTotale}"></td>
+            <td>
+                <!-- Iterate over the list of CommandeArticle objects -->
+                <ul>
+                    <li th:each="commandeArticle : ${commande.commandeArticles}">
+                        <!-- Assuming CommandeArticle has a reference to the Article entity -->
+                        <span th:text="${commandeArticle.article.name}"></span>
+                        <span th:text="${commandeArticle.quantity}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

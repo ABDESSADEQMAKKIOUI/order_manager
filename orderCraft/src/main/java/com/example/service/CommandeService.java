@@ -58,7 +58,6 @@ public class CommandeService {
             existingCommande.setClient(updatedCommande.getClient());
             existingCommande.setCommandeArticles(updatedCommande.getCommandeArticles());
             existingCommande.setDateC(updatedCommande.getDateC());
-            existingCommande.setCode(updatedCommande.getCode());
             existingCommande.setStats(updatedCommande.getStats());
             existingCommande.setPrixTotale((float) calculateTotalPrice(existingCommande));
 

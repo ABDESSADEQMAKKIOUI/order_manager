@@ -15,34 +15,31 @@ public class Commande {
     @JoinColumn(name = "client_id")
     private com.example.entity.Client client;
 
-
-
     @OneToMany(mappedBy = "commande")
     private List<CommandeArticle> commandeArticles;
 
     private LocalDate dateC;
 
-    private String code;
+
 
     private String stats;
-    private float prixTotale ;
+    private double prixTotale ;
 
     public Commande() {
         // Default constructor is required by JPA
     }
 
-    public Commande(Client client, LocalDate dateC, String code) {
+    public Commande(Client client, LocalDate dateC) {
         this.client = client;
         this.dateC = dateC;
-        this.code = code;
         this.stats = "Pending";
     }
 
-    public float getPrixTotale() {
+    public double getPrixTotale() {
         return prixTotale;
     }
 
-    public void setPrixTotale(float prixTotale) {
+    public void setPrixTotale(double prixTotale) {
         this.prixTotale = prixTotale;
     }
 
@@ -78,13 +75,6 @@ public class Commande {
         this.dateC = dateC;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getStats() {
         return stats;

@@ -1,79 +1,75 @@
-<!-- addCommandeForm.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Add Commande</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Add your custom styles here, if needed */
+    </style>
 </head>
 <body>
 
-<div class="container mt-3">
-    <h2>Add Commande</h2>
+<div class="container mt-5" th:object="${commandeForm}">
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Ajouter commande</h5>
+                    <small class="text-muted float-end">Default label</small>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/commandes/addCommande}" th:method="post">
+                        <div class="col-sm-6">
+                            <label th:for="client" ></label>
+                            <input type="text" th:id="client" th:name="client" required>
+                        </div>
+                        <h3>Articles de la commande :</h3>
+                        <div id="articles" class="mb-3">
+                            <!-- First line for the first article -->
+                            <div th:each="article, stat : ${commandeForm.articles}" class="article row">
+                                <div class="col-sm-6">
+                                    <label th:for="${'article' + stat.index + 1}" th:text="${'Article ' + (stat.index + 1) + ' :'}"></label>
+                                    <input type="text" th:id="${'article' + stat.index + 1}" th:name="articles" th:field="*{articles[__${stat.index}__]}" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label th:for="${'quantite' + stat.index + 1}" th:text="${'Quantité :'}"></label>
+                                    <input type="number" th:id="${'quantite' + stat.index + 1}" th:name="quantites" th:field="*{quantites[__${stat.index}__]}" required>
+                                </div>
+                            </div>
+                        </div>
 
-    <!-- Form for adding a commande with multiple articles and client -->
-    <form action="/addCommande" method="post" th:object="${commande}">
-        <div class="form-group">
-            <label for="client">Client:</label>
-            <select class="form-control" id="client" name="client.id" th:field="*{client.id}" required>
-                <!-- Assuming you have a list of clients available in the controller model -->
-                <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.name}"></option>
-            </select>
-        </div>
+                        <!-- Button to add a new article -->
+                        <button type="button" class="btn btn-primary" onclick="ajouterArticle()">Ajouter un article</button><br>
 
-        <div class="form-group">
-            <label for="articles">Articles:</label>
-            <!-- Dynamic section for adding articles -->
-            <div id="articleSection">
-                <div class="form-row mb-2">
-                    <div class="col">
-                        <select class="form-control" name="commandeArticles[0].article.id" required>
-                            <!-- Assuming you have a list of articles available in the controller model -->
-                            <option th:each="article : ${articles}" th:value="${article.id}" th:text="${article.name}"></option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <input type="number" class="form-control" name="commandeArticles[0].quantity" placeholder="Quantity" required>
-                    </div>
+                        <input type="submit" class="btn btn-success" value="Enregistrer la commande">
+                    </form>
                 </div>
             </div>
-            <button type="button" class="btn btn-success" onclick="addArticle()">Add Article</button>
         </div>
-
-        <!-- You may add input fields for other properties of the commande and its articles -->
-
-        <button type="submit" class="btn btn-primary">Add Commande</button>
-    </form>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<script th:inline="javascript">
-    var articleCount = 1;
+<script>
+    function ajouterArticle() {
+        var articlesDiv = document.getElementById("articles");
+        var nouvelleLigne = document.createElement("div");
+        var numeroArticle = articlesDiv.childElementCount + 1;
 
-    function addArticle() {
-        var newArticleRow = '' +
-            '<div class="form-row mb-2">' +
-            '   <div class="col">' +
-            '       <select class="form-control" name="commandeArticles[' + articleCount + '].article.id" required>' +
-            '           <!-- Assuming you have a list of articles available in the controller model -->' +
-            '           <option th:each="article : ${articles}" th:value="${article.id}" th:text="${article.name}"></option>' +
-            '       </select>' +
-            '   </div>' +
-            '   <div class="col">' +
-            '       <input type="number" class="form-control" name="commandeArticles[' + articleCount + '].quantity" placeholder="Quantity" required>' +
-            '   </div>' +
-            '</div>';
+        nouvelleLigne.className = "article row";
+        nouvelleLigne.innerHTML = "<div class='col-sm-6'><label for='article" + numeroArticle + "'>Article " + numeroArticle + " :</label>" +
+            "<input type='text' id='article" + numeroArticle + "' name='articles' required></div>" +
+            "<div class='col-sm-6'><label for='quantite" + numeroArticle + "'>Quantité :</label>" +
+            "<input type='number' id='quantite" + numeroArticle + "' name='quantites' required></div>";
 
-        $('#articleSection').append(newArticleRow);
-        articleCount++;
+        articlesDiv.appendChild(nouvelleLigne);
     }
 </script>
 

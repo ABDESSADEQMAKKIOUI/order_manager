@@ -7,7 +7,6 @@ com\example\entity\Article.class
 com\example\controller\CommandeController.class
 com\example\repository\ArticleRepository.class
 com\example\controller\UserController.class
-com\example\controller\HomeController.class
 com\example\entity\CommandeArticle.class
 com\example\repository\UserRepository.class
 com\example\entity\Client.class
@@ -16,3 +15,4 @@ com\example\service\UserService.class
 com\example\controller\ArticleController.class
 com\example\entity\Commande.class
 com\example\service\ClientService.class
+com\example\repository\CommandeArticleRepository.class

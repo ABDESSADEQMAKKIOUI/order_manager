@@ -48,7 +48,7 @@ public class ClientController {
     public String updateClient(@ModelAttribute Client client) {
         System.out.println(client);
         clientService.updateClient(client);
-        return "redirect:/clients/";
+        return "redirect:/clients/GereClient";
     }
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
@@ -57,8 +57,8 @@ public class ClientController {
         return "client/UpdateClient";
     }
     @GetMapping ("delete/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable("id") int id) {
+    public String deleteClient(@PathVariable("id") int id) {
         clientService.deleteClient(id);
-        return ResponseEntity.noContent().build();
+        return  "redirect:/client/GereClient";
     }
 }

@@ -30,7 +30,7 @@
             <td th:text="${article.prix}"></td>
             <td>
                 <!-- Add buttons for delete and update actions -->
-                <form th:action="@{'/articles/delete/' + ${${article.id}}}"  style="display: inline;">
+                <form th:action="@{'/articles/delete/' + ${article.id}}"  style="display: inline;">
                     <input type="hidden" name="_method" value="delete"/>
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
